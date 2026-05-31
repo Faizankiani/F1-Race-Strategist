@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- basic document metadata and character set definition -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>F1 Strategy Simulator</title>
+  
+  <!-- main stylesheet import -->
+  <link rel="stylesheet" href="css/styles.css?v=4" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#ff7a00" />
+  
+  <!-- external charting libraries loaded via cdn for visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+</head>
+<body>
+  
+  <!-- simplistic header bar -->
+  <header class="basic-header">
+    <h1><span class="title-accent">F1</span> Race Strategist</h1>
+  </header>
+
+  <!-- incremental react root (future proofing) -->
+  <div id="root"></div>
+
+    <main class="basic-container">
+      
+      <!-- left panel: inputs for race conditions and car configuration -->
+      <section class="panel panel-setup">
+        <h2 id="raceSetupTitle">Race Setup</h2>
+        <form id="raceForm" class="form-grid" novalidate>
+          <div class="field">
+            <label for="totalLaps">Total Laps</label>
+            <input type="text" id="totalLaps" name="totalLaps" placeholder="10-100" />
+          </div>
+          <div class="field">
+            <label for="fuelLoad">Fuel Load (kg)</label>
+            <input type="text" id="fuelLoad" name="fuelLoad" placeholder="10-150" />
+          </div>
+
+          <div class="field">
+            <label for="trackLength">Track Length (km)</label>
+            <input type="text" id="trackLength" name="trackLength" placeholder="1.0-50.0" />
+          </div>
+          <div class="field">
+            <label for="baseLapTime">Base Lap Time (s) <span class="info-icon" data-tooltip="The lap time under perfect conditions with no fuel load or tyre wear">i</span></label>
+            <input type="text" id="baseLapTime" name="baseLapTime" placeholder="30-150" />
+          </div>
+
+          <div class="field">
+            <label for="temperature">Temperature (°C)</label>
+            <input type="text" id="temperature" name="temperature" placeholder="-10 to 50" />
+          </div>
+          <div class="field">
+            <label for="pitStopLoss">Pit Stop Loss (s)</label>
+            <input type="text" id="pitStopLoss" name="pitStopLoss" placeholder="10-60" />
+          </div>
+
+          <div class="field">
+            <label for="degradation">Tyre Degradation</label>
+            <select id="degradation" name="degradation">
+              <option value="" disabled selected>Choose</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="totalRainfall">Total Rainfall (mm)</label>
+            <input type="text" id="totalRainfall" name="totalRainfall" placeholder="blank = 0 (dry)" />
+          </div>
+
+          <!-- action buttons for the form -->
+          <div class="field field-span-2" style="margin-top:4px; display:flex; gap:10px;">
+            <button type="submit" class="btn-basic" style="flex:2;">Run Simulation</button>
+            <button type="button" id="saveConfigBtn" class="btn-basic btn-alt" style="flex:1;">Save Config</button>
+            <button type="button" id="loadConfigBtn" class="btn-basic btn-alt" style="flex:1;">Load Config</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- right panel: displays the generated strategy options -->
+      <section class="panel panel-strategy">
+        <h2>Strategy Comparison</h2>
+        <div id="strategyStatus" class="strategy-status">No strategies yet. Fill the form and run a simulation.</div>
+        <div id="strategyCards" class="strategy-cards">
+          <!-- strategy cards are injected here by js -->
+        </div>
+      </section>
+
+      <!-- bottom panel: comprehensive charts for data analysis -->
+      <section class="panel panel-chart">
+        <h2>Race Chart</h2>
+        <div class="chart-key">
+          <span class="key-item"><span class="key-dot"></span> Pit stop</span>
+          <span class="key-item"><span class="key-dot fastest"></span> Fastest Lap</span>
+        </div>
+        <div class="charts-row">
+          <div class="chart-box">
+            <canvas id="lapChart"></canvas>
+          </div>
+          <div class="chart-box">
+            <canvas id="fuelChart"></canvas>
+          </div>
+          <div class="chart-box">
+            <canvas id="tyreChart"></canvas>
+          </div>
+        </div>
+      </section>
+      
+    </main>
+
+  <!-- main application logic script -->
+  <script type="module" src="js/app.js?v=12"></script>
+  
+  <!-- react entry point (if used) -->
+  <script type="module" src="/src/main.jsx"></script>
+
+  <!-- global modal for configuration management -->
+    <div id="configModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="configModalTitle">Save Configuration</h3>
+          <button class="modal-close" id="closeConfigModal" aria-label="Close">×</button>
+        </div>
+        <div class="modal-body" id="configModalBody">
+          <!-- dynamic content injected by modal.js -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- global loading spinner overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden" aria-live="polite" aria-busy="true">
+      <div class="loading-box">
+        <div class="spinner" aria-hidden="true"></div>
+        <div id="loadingText" class="loading-text">Working…</div>
+      </div>
+    </div>
+  </body>
+  </html>

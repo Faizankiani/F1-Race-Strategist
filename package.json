@@ -1,0 +1,27 @@
+{
+  "name": "f1-race-strategist",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Minimal Express server serving static frontend + test API.",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev:server": "nodemon backend/server.js",
+    "dev:client": "vite --config frontend/vite.config.js",
+    "dev": "concurrently -n server,client -c yellow,cyan \"npm:dev:server\" \"npm:dev:client\"",
+    "build:client": "vite build --config frontend/vite.config.js",
+    "preview:client": "vite preview --config frontend/vite.config.js --port 5173"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.7.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.0.1",
+    "nodemon": "^3.1.10",
+    "vite": "^5.4.8"
+  }
+}
